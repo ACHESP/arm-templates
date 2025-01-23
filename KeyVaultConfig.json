@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+  
+      // Global Parameters
+      "tags": {
+        "type": "object",
+        "defaultvalue": {
+          "environment": "dev",
+          "project": "Atenea"
+        }
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]"
+      },
+      "environment": {
+        "type": "string",
+        "allowedValues": ["dev", "uat", "pro"]
+      },
+      "keyVaultConfig": {
+        "type": "object",
+        "metadata": {
+          "description": "Key Vault configuration object."
+        }
+      },
+      // KV Parameters
+  
+        "deployKeyVault": {
+          "type": "bool",
+          "defaultValue": false
+        }
+      // End KV Parameters
+  
+      },
+    "functions": [],
+    "variables": {
+      "akvName": "[concat(parameters('environment'), '-', parameters('keyVaultConfig').keyVaultName)]"
+    },
+    "resources": [
+      {
+        "condition": "[parameters('deployKeyVault')]",
+        "type": "Microsoft.KeyVault/vaults",
+        "apiVersion": "2021-10-01",
+        "name": "[variables('akvName')]",
+        "location": "[parameters('location')]",
+        "tags": "[parameters('tags')]",
+        "properties": {
+          "sku": {
+            "family": "A",
+            "name": "[parameters('keyVaultConfig').KeyVaultSkuName]"
+          },
+          "enabledForDeployment": "[parameters('keyVaultConfig').enabledForDeployment]",
+          "enabledForDiskEncryption": "[parameters('keyVaultConfig').enabledForDiskEncryption]",
+          "enabledForTemplateDeployment": "[parameters('keyVaultConfig').enabledForTemplateDeployment]",
+          "publicNetworkAccess": "[parameters('keyVaultConfig').keyVaultPublicNetworkAccess]",
+          "softDeleteRetentionInDays": "[parameters('keyVaultConfig').softDeleteRetentionInDays]",
+          "networkAcls": {
+            "defaultAction": "Allow", // Deny
+            "bypass": "AzureServices"
+          }
+        },
+        "dependsOn": []
+      }
+    ],
+    "outputs": {
+      "keyVaultId": {
+        "type": "string",
+        "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultConfig').keyVaultName)]"
+      }
+    }
+  }
+  
+  
