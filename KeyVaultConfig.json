@@ -17,7 +17,8 @@
       },
       "environment": {
         "type": "string",
-        "allowedValues": ["dev", "uat", "pro"]
+        "allowedValues": ["dev", "uat", "pro"],
+        "defaultValue": "dev"
       },
       "keyVaultConfig": {
         "type": "object",
