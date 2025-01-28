@@ -2,10 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-  
-      // Global Parameters
-  
-      // Is this a variable?
       "tags": {
         "type": "object",
         "defaultvalue": {
@@ -13,7 +9,7 @@
           "project": "Atenea"
         }
       },
-  
+
       "location": {
         "type": "string",
         "defaultValue": "[resourceGroup().location]"
@@ -23,8 +19,7 @@
         "allowedValues": ["dev", "uat", "pro"],
         "defaultValue": "dev"
       },
-  
-      // Storage Parameters
+
       "storageAccountConfig": {
         "type": "object",
         "metadata": {
@@ -44,17 +39,16 @@
           "allowBlobPublicAccess": false
         }
       },
-        "deployBlobContainers": {
-          "type": "bool",
-          "defaultValue": false
-        },
-        "blobContainers": {
-          "type": "array",
-          "defaultValue": ["raw-bronze-zone", "dq-silver-zone", "dq-rejected", "gold-mdm-zone", "marketplace", "log-adf-traces", "other-tennant"]
-        }
-      // End Storage Parameters
-  
+      "deployBlobContainers": {
+        "type": "bool",
+        "defaultValue": false
       },
+      "blobContainers": {
+        "type": "array",
+        "defaultValue": ["raw-bronze-zone", "dq-silver-zone", "dq-rejected", "gold-mdm-zone", "marketplace", "log-adf-traces", "other-tennant"]
+      }
+  
+    },
     "functions": [],
     "variables": {
       "accountName": "[concat(parameters('environment'), parameters('storageAccountConfig').storageName)]"
@@ -92,7 +86,7 @@
         }
       }
     },
-    // blobServices
+    
     {
         "condition": "[parameters('deployBlobContainers')]",
         "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
