@@ -65,16 +65,23 @@
       },
       "kind": "StorageV2",
       "properties": {
+        "dnsEndpointType": "Standard",
+        "allowedCopyScope": "AAD",
+        "defaultToOAuthAuthentication": true,
+        "allowCrossTenantReplication": false,
+        
+        "allowBlobPublicAccess": "[parameters('storageAccountConfig').allowBlobPublicAccess]",
+        "pulicNetworkAcces": "[parameters('storageAccountConfig').publicNetworkAccess]",
         "accessTier": "[parameters('storageAccountConfig').accessTier]",
         "minimumTlsVersion": "[parameters('storageAccountConfig').minimumTlsVersion]",
         "supportsHttpsTrafficOnly": "[parameters('storageAccountConfig').encryptionEnabled]",
         "isHnsEnabled": "[parameters('storageAccountConfig').isHnsEnabled]",
-        "allowBlobPublicAccess": "[parameters('storageAccountConfig').allowBlobPublicAccess]",
+        "isSftpEnabled": false,
         "networkAcls": {
           "bypass": "AzureServices",
           "virtualNetworkRules": [],
           "ipRules": [],
-          "defaultAction": "[parameters('storageAccountConfig').publicNetworkAccess]"
+          "defaultAction": "Deny"
         },
         "encryption": {
           "requireInfrastructureEncryption": true,
