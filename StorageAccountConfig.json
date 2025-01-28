@@ -82,7 +82,8 @@
           "virtualNetworkRules": [],
           "ipRules": [],
           "defaultAction": "Deny"
-        },
+        }
+        /*,
         "encryption": {
           "requireInfrastructureEncryption": true,
           "services": {
@@ -90,7 +91,7 @@
             "blob": { "keyType": "Account", "enabled": "[parameters('storageAccountConfig').encryptInfra]" }
           },
           "keySource": "Microsoft.Storage"
-        }
+        }*/
       }
     },
     
