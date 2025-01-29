@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "tags": {
+        "type": "object",
+        "defaultvalue": {
+          "environment": "dev",
+          "project": "Atenea"
+        }
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]"
+      },
+      "environment": {
+        "type": "string",
+        "allowedValues": ["dev", "uat", "pro"]
+      },
+      "dataFactoryName": {
+        "type": "string"
+      },
+      "deployDataFactory": {
+        "type": "bool"
+      }
+    },
+  "functions": [],
+  "variables": {
+    "adfName": "[concat(parameters('environment'), '-', parameters('dataFactoryName'))]"
+  },
+  "resources": [
+    {
+      "condition": "[parameters('deployDataFactory')]",
+      "type": "Microsoft.DataFactory/factories",
+      "apiVersion": "2018-06-01",
+      "name": "[variables('adfName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {}
+    }
+  ],
+  "outputs": {
+    
+    "DataFactoryId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.DataFactory/factories', variables('adfName'))]"
+    }
+  }
+}
