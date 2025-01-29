@@ -43,8 +43,7 @@
                 "defaultValue": false
             },
             "blobContainers": {
-                "type": "array",
-                "defaultValue": ["raw-bronze-zone", "dq-silver-zone", "dq-rejected", "gold-mdm-zone", "marketplace", "log-adf-traces", "other-tennant"]
+                "type": "array"
             },
             
             "StorageAccountRoleNameToAssign": {
@@ -75,12 +74,18 @@
                     "description": "Specifies the role the user will get with the secret in the vault. Valid values are: Key Vault Administrator, Key Vault Certificates Officer, Key Vault Crypto Officer, Key Vault Crypto Service Encryption User, Key Vault Crypto User, Key Vault Reader, Key Vault Secrets Officer, Key Vault Secrets User."
                 }
             },
+
+            // Secret Names
+
+                "storegeKeySecretName": {
+                    "type": "string"
+                },
             
         // Key Vault parameters
             "keyVaultConfig": {
                 "type": "object",
                 "metadata": {
-                "description": "Key Vault configuration object."
+                    "description": "Key Vault configuration object."
                 }
             },
   
@@ -283,6 +288,20 @@
                 "tier": "Standard"
             }
         },
+
+            // Secret (Account Key Connection String)
+                {
+                    "type": "Microsoft.KeyVault/vaults/secrets",
+                    "apiVersion": "2019-09-01",
+                    "name": "[format('{0}/{1}',variables('akvName'), parameters('storegeKeySecretName'))]",                     
+                    "properties": {
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('accountName'), ';AccountKey=', listKeys(variables('accountName'), '2019-06-01').keys[0].value)]"
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Storage/storageAccounts', variables('accountName'))]",
+                        "[resourceId('Microsoft.KeyVault/vaults', variables('akvName'))]"
+                    ]
+                },
         {
             "condition": "[parameters('keyVaultConfig').deployKeyVault]",
             "type": "Microsoft.KeyVault/vaults",
