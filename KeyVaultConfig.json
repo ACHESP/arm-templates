@@ -49,6 +49,8 @@
           "enabledForTemplateDeployment": "[parameters('keyVaultConfig').enabledForTemplateDeployment]",
           "publicNetworkAccess": "[parameters('keyVaultConfig').keyVaultPublicNetworkAccess]",
           "softDeleteRetentionInDays": "[parameters('keyVaultConfig').softDeleteRetentionInDays]",
+          "enableRbacAuthorization": "[parameters('keyVaultConfig').enableRbacAuthorization]",
+          "tenantId": "[subscription().tenantId]",
           "networkAcls": {
             "defaultAction": "Allow", // Deny
             "bypass": "AzureServices"
