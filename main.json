@@ -78,7 +78,8 @@
             // Secret Names
 
                 "storegeKeySecretName": {
-                    "type": "string"
+                    "type": "string",
+                    "defaultValue": "atenealake-StorageAccountKey"
                 },
             
         // Key Vault parameters
