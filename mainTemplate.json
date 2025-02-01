@@ -226,6 +226,7 @@
         // End Data Factory Variables
     },
     "resources": [
+        // Storage Account
         {
             "condition": "[parameters('storageAccountConfig').deployStorageAccount]",
             "type": "Microsoft.Storage/storageAccounts",
@@ -268,6 +269,7 @@
             }
         },
         
+        // Blob Containers
         {
             "condition": "[parameters('deployBlobContainers')]",
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
@@ -303,6 +305,7 @@
                         "[resourceId('Microsoft.KeyVault/vaults', variables('akvName'))]"
                     ]
                 },
+        // KV
         {
             "condition": "[parameters('keyVaultConfig').deployKeyVault]",
             "type": "Microsoft.KeyVault/vaults",
@@ -348,9 +351,25 @@
 
     ],
     "outputs": {
+        "KeyVaultId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.KeyVault/vaults', variables('akvName'))]"
+        },
         "DataFactoryId": {
             "type": "string",
             "value": "[resourceId('Microsoft.DataFactory/factories', variables('adfName'))]"
+        },
+        "StorageAccountId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('accountName'))]"
+        },
+        "storageEndpoint": {
+            "type": "object",
+            "value": "[reference(variables('accountName')).primaryEndpoints]"
+        },
+        "StorageSecretId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('storegeKeySecretName'))]"
         }
     }
 }
