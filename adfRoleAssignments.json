@@ -136,18 +136,6 @@
     "resources": [
 
         {
-            "condition": "[parameters('deployDataFactory')]",
-            "type": "Microsoft.DataFactory/factories",
-            "apiVersion": "2018-06-01",
-            "name": "[variables('adfName')]",
-            "location": "[parameters('location')]",
-            "tags": "[parameters('tags')]",
-            "identity": {
-                "type": "SystemAssigned"
-            },
-            "properties": {}
-        },
-        {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "2022-04-01",
             "tags": "[parameters('tags')]",
